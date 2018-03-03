@@ -76,7 +76,7 @@ public class BodyDeferringAsyncHandlerTest extends AbstractBasicTest {
     }
   }
 
-  @Test(expectedExceptions = RemotelyClosedException.class, enabled = false)
+  @Test(expectedExceptions = RemotelyClosedException.class)
   public void deferredSimpleWithFailure() throws Throwable {
     try (AsyncHttpClient client = asyncHttpClient(getAsyncHttpClientConfig())) {
       BoundRequestBuilder r = client.prepareGet(getTargetUrl()).addHeader("X-FAIL-TRANSFER", Boolean.TRUE.toString());

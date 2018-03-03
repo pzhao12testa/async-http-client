@@ -1,28 +1,24 @@
-language: java
-jdk:
-  - oraclejdk8
-
-before_script:
-  - travis/before_script.sh
-
-script: 
-  - mvn test -Ptest-output
-  - find $HOME/.m2 -name "_remote.repositories" | xargs rm
-  - find $HOME/.m2 -name "resolver-status.properties" | xargs rm -f
-  
-# If building master, Publish to Sonatype
-after_success: 
-  - travis/after_success.sh
-
-sudo: false
-
-# https://github.com/travis-ci/travis-ci/issues/3259
 addons:
   apt:
     packages:
-      - oracle-java8-installer
-
-# Cache settings
+    - oracle-java8-installer
+after_success:
+- travis/after_success.sh
+before_script:
+- travis/before_script.sh
 cache:
   directories:
-    - $HOME/.m2/repository
+  - $HOME/.m2/repository
+jdk:
+- oraclejdk8
+language: java
+script:
+- touch /tmp/NOW
+- echo GIBSTUDYSTART $(date)
+- mvn test -Ptest-output
+- find $HOME/.m2 -name "_remote.repositories" | xargs rm
+- find $HOME/.m2 -name "resolver-status.properties" | xargs rm -f
+- echo GIBSTUDYEND $(date)
+- cd $TRAVIS_BUILD_DIR
+- echo TESTNUM $(find . -name TEST-*.xml -newer /tmp/NOW | wc -l)
+sudo: false

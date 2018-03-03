@@ -93,7 +93,7 @@ public class Utf8ByteBufCharsetDecoder {
     return CharBuffer.allocate(l);
   }
 
-  protected void ensureCapacity(int l) {
+  private void ensureCapacity(int l) {
     if (charBuffer.position() == 0) {
       if (charBuffer.capacity() < l) {
         charBuffer = allocateCharBuffer(l);
@@ -191,7 +191,7 @@ public class Utf8ByteBufCharsetDecoder {
     if (buf.isDirect()) {
       return buf.toString(UTF_8);
     }
-    decodeHeap0(buf);
+    decodeHead0(buf);
     return charBuffer.toString();
   }
 
@@ -199,7 +199,7 @@ public class Utf8ByteBufCharsetDecoder {
     if (buf.isDirect()) {
       return buf.toString(UTF_8).toCharArray();
     }
-    decodeHeap0(buf);
+    decodeHead0(buf);
     return toCharArray(charBuffer);
   }
 
@@ -231,7 +231,7 @@ public class Utf8ByteBufCharsetDecoder {
     }
   }
 
-  private void decodeHeap0(ByteBuf buf) {
+  private void decodeHead0(ByteBuf buf) {
     int length = buf.readableBytes();
     ensureCapacity(length);
 
